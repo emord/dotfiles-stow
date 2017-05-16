@@ -1,0 +1,19 @@
+# ~/.tmuxinator/hq.yml
+
+name: hq
+root: ~/workspace/commcare-hq
+
+# Optional tmux socket
+# socket_name: foo
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: workon commcare-hq
+
+
+windows:
+  - prod: fab production deploy
+  - india: fab india deploy
+  - swiss: fab swiss deploy
