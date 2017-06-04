@@ -14,6 +14,7 @@
 	unstage = reset HEAD --
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ctags = !.git/hooks/ctags
+    praise = blame
 
     # remove all branches merged in to HEAD
     trim = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
