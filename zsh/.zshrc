@@ -38,7 +38,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-export EDITOR="nvim"
+export EDITOR="vim"
 export BROWSER="google-chrome"
 export TERM="xterm-256color"
 
