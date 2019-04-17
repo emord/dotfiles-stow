@@ -1,7 +1,7 @@
 # ~/.tmuxinator/ansible.yml
 
-name: ansible
-root: ~/workspace/commcarehq-ansible
+name: commcare-cloud
+root: ~/workspace/commcare-cloud
 
 # Optional tmux socket
 # socket_name: foo
