@@ -21,7 +21,7 @@ Plugin 'mileszs/ack.vim'
 
 Plugin 'Raimondi/delimitMate'
 Plugin 'elzr/vim-json', { 'for': 'json' }
-Plugin 'junegunn/fzf', { 'do': 'yes \| ./install' }
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plugin 'terryma/vim-expand-region'
 
