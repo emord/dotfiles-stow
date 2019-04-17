@@ -21,9 +21,11 @@
 
     edit-modified = "!f() { git ls-files --modified | cut -f2 | sort -u ; }; vim `f`"
     edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+    edit-untracked = "!f() { git ls-files --others --exclude-standard | cut -f2 | sort -u ; }; vim `f`"
     add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
 
     sub = submodule update --init --recursive
+    csv-dff = diff --color-words="[^[:space:],]+"
 [help]
 	autocorrect = 1
 [init]
@@ -38,6 +40,6 @@
 [status]
     showUntrackedFiles = all
 [transfer]
-    fsckobjects = true
+    fsckobjects = false
 [fetch]
-	fsckObjects = true
+    fsckObjects = false
