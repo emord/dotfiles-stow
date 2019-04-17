@@ -26,6 +26,11 @@ Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'terryma/vim-expand-region'
 
 Plugin 'elmcast/elm-vim', { 'for': 'elm' }
+Plugin 'chrisbra/csv.vim', { 'for': 'csv' }
+
+Plugin 'ryanoasis/vim-devicons'
+
+Plugin 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 
 call vundle#end()
 " }}}
