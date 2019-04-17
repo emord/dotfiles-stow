@@ -8,7 +8,6 @@ set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()
 
 Plugin 'flazz/vim-colorschemes'
-Plugin 'simnalamburt/vim-mundo'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
