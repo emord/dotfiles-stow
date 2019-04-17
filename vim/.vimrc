@@ -86,6 +86,7 @@ endif
 cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
 nnoremap <Leader>s :Ack! -w <C-R><C-W><CR>
+nnoremap <Leader>p :Ack! -w --python <C-R><C-W><CR>
 
 nnoremap <C-p>  :FZF<CR>
 " }}}
@@ -173,7 +174,7 @@ endif
 
 let g:ale_lint_delay = 500
 let g:ale_python_pylint_options = '--load-plugins pylint_django'
-let g:ale_python_flake8_args = '--max-line-length=115 --ignore E401'
+" let g:ale_python_flake8_args = '--max-line-length=115 --ignore E401'
 let g:ale_linters = {
     \   'python': ['flake8', 'pylint'],
 \}
