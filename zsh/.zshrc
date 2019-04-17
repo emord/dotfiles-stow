@@ -92,3 +92,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 autoload -U bashcompinit
 bashcompinit
 cd
+
+export GTK_IM_MODULE=xim
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=xim
