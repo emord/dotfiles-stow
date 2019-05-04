@@ -31,6 +31,7 @@ Plugin 'chrisbra/csv.vim', { 'for': 'csv' }
 Plugin 'ryanoasis/vim-devicons'
 
 Plugin 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plugin 'editorconfig/editorconfig-vim'
 
 call vundle#end()
 " }}}
@@ -99,11 +100,11 @@ set softtabstop=4
 set tabstop=4
 set autoindent
 
-if has("autocmd")
-  autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
-  autocmd FileType tsv,xml setlocal ts=4 sts=4 sw=4 noexpandtab
-  autocmd FileType scss,html,css,ruby,eruby setlocal ts=2 sts=2 sw=2 expandtab
-endif
+" if has("autocmd")
+  " autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
+  " autocmd FileType tsv,xml setlocal ts=4 sts=4 sw=4 noexpandtab
+  " autocmd FileType scss,html,css,ruby,eruby setlocal ts=2 sts=2 sw=2 expandtab
+" endif
 " }}}
 
 "line numbers
