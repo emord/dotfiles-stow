@@ -3,11 +3,7 @@
 name: hq
 root: ~/workspace/commcare-hq
 
-# Optional tmux socket
-# socket_name: foo
-
-# Runs before everything. Use it to start daemons etc.
-pre: ./scripts/docker start
+on_project_first_start: ./scripts/docker start
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: workon commcare-hq
@@ -29,4 +25,6 @@ tmux_command: tmux -2
 
 windows:
   - editor: #zsh
-  - server: ./manage.py runserver 0.0.0.0:8000
+  - server:
+    - cd ~/workspace/commcare-hq
+    - ./manage.py runserver 0.0.0.0:8000
