@@ -32,6 +32,7 @@ Plugin 'ryanoasis/vim-devicons'
 
 Plugin 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'ludovicchabant/vim-gutentags'
 
 call vundle#end()
 " }}}
@@ -139,6 +140,9 @@ set undofile
 set undodir=~/.vim/undo
 set undolevels=1000
 set undoreload=10000
+
+let g:gutentags_cache_dir = '~/.vim/tags'
+let g:gutentags_ctags_exclude = ['*.js', '*.sql']
 " }}}
 
 "breaks on whitespace
