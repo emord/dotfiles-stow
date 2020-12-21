@@ -1,63 +1,71 @@
-set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+" Plugins {{{
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/0.10.0/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" Vundle {{{
-set nocompatible
-filetype off
+call plug#begin('~/.vim/plugged')
 
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#begin()
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'mileszs/ack.vim'
 
-Plugin 'flazz/vim-colorschemes'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
-Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plugin 'w0rp/ale'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plugin 'mileszs/ack.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plugin 'Raimondi/delimitMate'
-Plugin 'elzr/vim-json', { 'for': 'json' }
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'ActivityWatch/aw-watcher-vim'
 
-Plugin 'terryma/vim-expand-region'
+Plug 'tomtom/tcomment_vim'
+Plug 'Raimondi/delimitMate'
+Plug 'terryma/vim-expand-region'
 
-Plugin 'elmcast/elm-vim', { 'for': 'elm' }
-Plugin 'chrisbra/csv.vim', { 'for': 'csv' }
+" UI
 
-Plugin 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
 
-Plugin 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'ludovicchabant/vim-gutentags'
-
-call vundle#end()
+call plug#end()
 " }}}
+
+" General UI {{{
+
+filetype plugin indent on
+syntax enable
+
+set number
+set cursorline
+
+set hidden " can move away from a changed buffer without warning
+
+set scrolloff=5 " keeps the cursor off the bottom
+
+set autoindent
 
 " Colors {{{
 set t_Co=256
 colorscheme zenburn
 " }}}
 
-" Enable file type detection
-filetype plugin indent on
-syntax enable
+set diffopt+=iwhite " ignore white space in diffs
 
-set lazyredraw " redraw only when necessary
+set linebreak " break on white space or special character (breakat)
 
-" NERDTree fix directory opening
-let g:NERDTreeDirArrows=0
-let NERDTreeIgnore = ['\.pyc$']
+set listchars=tab:>\ ,eol:¬ " non-printable characters to display when :set list
 
-set modelines=1
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
-"spell checking
+let g:airline_theme='bubblegum'
+
+" }}}
+
 set spell spelllang=en_us
 
-" Keybindings {{{
 let mapleader = "\<Space>"
 
 " better navigation when wrapping
@@ -68,64 +76,12 @@ vnoremap k gk
 
 "escape with jk
 inoremap jk <Esc>
-" }}}
 
-" Search {{{
-"search looks for matches while typing and highlights the matches
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
-set showmatch " highlight matching [{()}]
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
 
-" turn off highlight
-nnoremap <leader><space> :nohlsearch<CR>
-
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
-nnoremap <Leader>s :Ack! -w <C-R><C-W><CR>
-nnoremap <Leader>p :Ack! -w --python <C-R><C-W><CR>
-
-nnoremap <C-p>  :FZF<CR>
-" }}}
-
-" Tabs {{{
-"tabs = 4 spaces and auto indent
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
-set autoindent
-
-" if has("autocmd")
-  " autocmd FileType make setlocal ts=4 sts=4 sw=4 noexpandtab
-  " autocmd FileType tsv,xml setlocal ts=4 sts=4 sw=4 noexpandtab
-  " autocmd FileType scss,html,css,ruby,eruby setlocal ts=2 sts=2 sw=2 expandtab
-" endif
-" }}}
-
-"line numbers
-set number
-
-set cursorline
-
-"latex-suite
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor = "latex"
-
-"NERDTree toggling
-nnoremap <F3> :NERDTreeToggle<CR>
-nnoremap <F4> :TlistToggle<CR>
-
-set foldmethod=indent
-set foldlevel=99
-
-" keeps the cursor off the bottom
-set scrolloff=5
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 " Files {{{
 "persistent undo and auto backup
@@ -140,52 +96,53 @@ set undofile
 set undodir=~/.vim/undo
 set undolevels=1000
 set undoreload=10000
-
-let g:gutentags_cache_dir = '~/.vim/tags'
-let g:gutentags_ctags_exclude = ['*.js', '*.sql']
 " }}}
 
-"breaks on whitespace
-set wrap linebreak nolist
+" Search {{{
+set incsearch " match while typing
+set hlsearch " highlight all matches
+set ignorecase
+set smartcase
+set showmatch " highlight matching [{()}]
 
-"fix backspace
-set backspace=indent,eol,start
+" Remove highlights
+nnoremap <leader><space> :nohlsearch<CR>
 
-"highlight trailing whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-
-" can move away from a changed buffer without warning
-set hidden
-
-" Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
-
-" Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬
-
-if has("autocmd")
-  autocmd FileType python setlocal foldmethod=indent
-  " autocmd! BufWritePost,BufReadPost *.py,*.js,*.json Neomake
+" Ack/Ag {{{
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
 endif
 
-" let g:neomake_python_pylint_exe = '/home/jemord/.virtualenvs/commcare-hq/bin/pylint'
-" let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
-" let g:neomake_python_pylint_maker = {
-"     \ 'args': ['--load-plugins', 'pylint_django'],
-"     \ }
+cnoreabbrev Ack Ack!
+"nnoremap <Leader>a :Ack!<Space>
+"nnoremap <Leader>s :Ack! -w <C-R><C-W><CR>
+" }}}
 
-" let g:neomake_open_list = 1
+" FZF {{{
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_layout = { 'down': '30%' }
 
-let g:ale_lint_delay = 500
-let g:ale_python_pylint_options = '--load-plugins pylint_django'
-" let g:ale_python_flake8_args = '--max-line-length=115 --ignore E401'
-let g:ale_linters = {
-    \   'python': ['flake8', 'pylint'],
-\}
+nnoremap <C-p>  :FZF<CR>
+" }}}
 
-set diffopt+=iwhite
+" }}}
 
+" File Browser {{{
+nnoremap <F3> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+" }}}
+
+" Warnings and Linting {{{
+" highlight trailing white space
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+" }}}
+
+" Helpers {{{
 function! s:RemoveMultipleNewlines()
     :%s/\s\+$//e
     :%s/\n\{3,}/\r\r/e
@@ -204,20 +161,86 @@ function! s:FormatXML()
 endfunction
 
 command! FormatXML call s:FormatXML()
+" }}}
 
-set laststatus=2
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+" Completion/CoC {{{
+let g:coc_global_extensions = [
+\ 'coc-json',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-yaml',
+\ 'coc-highlight',
+\ 'coc-python',
+\ 'coc-metals',
+\ 'coc-markdownlint'
+\ ]
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
 
-let g:airline_theme='bubblegum'
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=auto
 
-let g:csv_highlight_column = 'y'
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 
-nnoremap <Leader>t :tselect
+" Give more space for displaying messages.
+set cmdheight=2
 
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
 
-set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" }}}
 
 " vim:foldmethod=marker:foldlevel=0
