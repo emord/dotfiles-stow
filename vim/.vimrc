@@ -15,8 +15,6 @@ Plug 'mileszs/ack.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'ActivityWatch/aw-watcher-vim'
-
 Plug 'tomtom/tcomment_vim'
 Plug 'Raimondi/delimitMate'
 Plug 'terryma/vim-expand-region'
@@ -82,6 +80,9 @@ nmap <leader>l :set list!<CR>
 
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
+
+" Always use system clipboard
+set clipboard+=unnamedplus
 
 " Files {{{
 "persistent undo and auto backup
@@ -242,5 +243,9 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " }}}
+
+"" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+
 
 " vim:foldmethod=marker:foldlevel=0
