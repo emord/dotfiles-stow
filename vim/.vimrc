@@ -8,6 +8,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/fzf'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'mileszs/ack.vim'
@@ -18,6 +19,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tomtom/tcomment_vim'
 Plug 'Raimondi/delimitMate'
 Plug 'terryma/vim-expand-region'
+
+Plug 'alfredodeza/pytest.vim'
 
 " UI
 
@@ -48,7 +51,7 @@ set t_Co=256
 colorscheme zenburn
 " }}}
 
-set diffopt+=iwhite " ignore white space in diffs
+"set diffopt+=iwhite " ignore white space in diffs
 
 set linebreak " break on white space or special character (breakat)
 
@@ -82,7 +85,7 @@ vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 " Always use system clipboard
-set clipboard+=unnamedplus
+set clipboard^=unnamed,unnamedplus
 
 " Files {{{
 "persistent undo and auto backup
@@ -171,9 +174,9 @@ let g:coc_global_extensions = [
 \ 'coc-css',
 \ 'coc-yaml',
 \ 'coc-highlight',
-\ 'coc-python',
-\ 'coc-metals',
-\ 'coc-markdownlint'
+\ 'coc-pyright',
+\ 'coc-markdownlint',
+\ 'coc-tsserver',
 \ ]
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -238,10 +241,20 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " }}}
 
 "" Search workspace symbols.

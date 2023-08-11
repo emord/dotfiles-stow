@@ -1,23 +1,26 @@
 [user]
-	email = jon@emord.dev
+	email = emord@users.noreply.github.com
 	name = Jon Emord
 [color]
 	ui = true
 [core]
-	editor = vim
+	editor = nvim
+	excludesFile = ~/.gitignore
 [help]
 	autocorrect = 1
 [alias]
 	co = checkout
 	st = status
+	stauts = status
+	stuats = status
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
 	# remove all branches merged in to HEAD
-	trim = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+	trim = "!git checkout -q master && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base master $branch) && [[ $(git cherry master $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == "-"* ]] && git branch -D $branch; done"
 
-	edit-modified = "!f() { git ls-files --modified | cut -f2 | sort -u ; }; vim `f`"
-	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
-	edit-untracked = "!f() { git ls-files --others --exclude-standard | cut -f2 | sort -u ; }; vim `f`"
+	edit-modified = "!f() { git ls-files --modified | cut -f2 | sort -u ; }; nvim `f`"
+	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; nvim `f`"
+	edit-untracked = "!f() { git ls-files --others --exclude-standard | cut -f2 | sort -u ; }; nvim `f`"
 	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
 
 	csv-diff = diff --color-words="[^[:space:],]+"
@@ -26,3 +29,11 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
+[diff "ansible-vault"]
+	textconv = ansible-vault view
+[difftool]
+	external = difft
